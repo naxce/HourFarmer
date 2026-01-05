@@ -15,11 +15,10 @@ This is useful if you want to increase in-game hours for games without keeping t
 
 ![HourFarmer Preview](HourFarmerPreview.gif)
 
-> [!IMPORTANT]
+> [!WARNING]
 > - This project is **not affiliated with Valve or Steam**.  
 > - Using third-party tools that simulate activity may violate Steam’s Terms of Service.  
 > - Use this software **at your own risk**.
-> - 
 
 ---
 
