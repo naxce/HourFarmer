@@ -39,6 +39,8 @@ This is useful if you want to increase in-game hours for games without keeping t
 - Having the game installed **OR**
 - ***NOW IN v1.2*** ⮞ Having the ID of the game
 
+---
+
 ## 🧠 Usage
 
 - Log in to your Steam account
