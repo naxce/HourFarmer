@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "dgSpecHash": "d88vHoxjjx8=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\naxce\\Desktop\\Pulpit\\Programowanie\\C#\\HourFarmer\\HourFarmer\\HourFarmer.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\naxce\\.nuget\\packages\\costura.fody\\6.0.0\\costura.fody.6.0.0.nupkg.sha512",
+    "C:\\Users\\naxce\\.nuget\\packages\\fody\\6.8.2\\fody.6.8.2.nupkg.sha512",
+    "C:\\Users\\naxce\\.nuget\\packages\\microsoft.net.illink.tasks\\9.0.10\\microsoft.net.illink.tasks.9.0.10.nupkg.sha512",
+    "C:\\Users\\naxce\\.nuget\\packages\\steamworks.net\\2024.8.0\\steamworks.net.2024.8.0.nupkg.sha512",
+    "C:\\Users\\naxce\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\9.0.10\\microsoft.netcore.app.runtime.win-x64.9.0.10.nupkg.sha512",
+    "C:\\Users\\naxce\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\9.0.10\\microsoft.windowsdesktop.app.runtime.win-x64.9.0.10.nupkg.sha512",
+    "C:\\Users\\naxce\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\9.0.10\\microsoft.aspnetcore.app.runtime.win-x64.9.0.10.nupkg.sha512",
+    "C:\\Users\\naxce\\.nuget\\packages\\microsoft.netcore.app.crossgen2.win-x64\\9.0.10\\microsoft.netcore.app.crossgen2.win-x64.9.0.10.nupkg.sha512"
+  ],
+  "logs": []
+}
