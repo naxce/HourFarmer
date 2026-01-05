@@ -34,10 +34,8 @@ Use this software **at your own risk**.
 
 - A valid Steam account  
 - Steam Guard access (for authentication if required)  
-- Proper runtime depending on the implementation (e.g. .NET / Node.js)  
-
-> Exact requirements depend on how HourFarmer is implemented.  
-> This section can be expanded with more technical details in future updates.
+- Having the game installed
+> **NOW IN v1.2** Having the ID of the game
 
 ---
 
