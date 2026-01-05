@@ -53,7 +53,15 @@ This is useful if you want to increase in-game hours for games without keeping t
 
 ## 📦 Installation
 
-1. **Clone the repository**
+**Clone the repository**
    ```bash
    git clone https://github.com/naxce/HourFarmer.git
    cd HourFarmer
+   ```
+
+**Download from [🇫​🇦​🇹​🇺​🇲​](https://fatum.cc/)**
+   ```
+   1. Download FatumInstaller
+   2. Choose HourFarmer
+   3. Install to prefered location
+   ```
