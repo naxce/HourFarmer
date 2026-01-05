@@ -34,7 +34,7 @@ Use this software **at your own risk**.
 
 - A valid Steam account  
 - Steam Guard access (for authentication if required)  
-- Having the game installed
+- Having the game installed **OR**
 - ***NOW IN v1.2*** ⮞ Having the ID of the game
 
 ---
