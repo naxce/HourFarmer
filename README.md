@@ -3,7 +3,7 @@
 **HourFarmer** is a lightweight tool designed to **farm Steam in-game hours** by simulating game activity without actively playing.  
 It allows selected games to appear as running on your Steam account, increasing their total playtime automatically without the need to run the game (and drain your device's performance). 
 
-Download: [🇫​🇦​🇹​🇺​🇲​](https://fatum.cc/)   
+Download: [🇫​🇦​🇹​🇺​🇲​](https://fatum.cc/) <br />
 Repository: [🇬​🇮​🇹​🇭​🇺​🇧​ 🇷​🇪​🇵​🇴​](https://github.com/naxce/HourFarmer)
 
 ---
@@ -53,23 +53,21 @@ This is useful if you want to increase in-game hours for games without keeping t
 
 ## 📝 Changelog
 
-- For changelog, see [Releases​](https://github.com/naxce/TempInfo/releases)
+- For changelog, see [Releases​](https://github.com/naxce/HourFarmer/releases)
 
 ---
 
 ## 📦 Installation
 
 **Clone the repository**
-
-   ```bash
-   git clone https://github.com/naxce/HourFarmer.git
-   cd HourFarmer
-   ```
+   ```bash
+   git clone https://github.com/naxce/HourFarmer.git
+   cd TempInfo
+   ```
 
 **Download from [🇫​🇦​🇹​🇺​🇲​](https://fatum.cc/)**
-
-   ```
-   1. Download FatumInstaller
-   2. Choose HourFarmer
-   3. Install to prefered location
-   ```
+   ```
+   1. Download FatumInstaller
+   2. Choose HourFarmer
+   3. Install to prefered location
+   ```
