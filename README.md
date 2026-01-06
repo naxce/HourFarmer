@@ -51,6 +51,12 @@ This is useful if you want to increase in-game hours for games without keeping t
 
 ---
 
+## 📝 Changelog
+
+- For changelog, see [Releases​](https://github.com/naxce/TempInfo/releases)
+
+---
+
 ## 📦 Installation
 
 **Clone the repository**
