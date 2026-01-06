@@ -20,10 +20,10 @@ C:\Users\naxce\Desktop\Pulpit\Programowanie\C#\HourFarmer\HourFarmer\obj\Release
 C:\Users\naxce\Desktop\Pulpit\Programowanie\C#\HourFarmer\HourFarmer\obj\Release\net9.0-windows\HourFarmer.AssemblyInfoInputs.cache
 C:\Users\naxce\Desktop\Pulpit\Programowanie\C#\HourFarmer\HourFarmer\obj\Release\net9.0-windows\HourFarmer.AssemblyInfo.cs
 C:\Users\naxce\Desktop\Pulpit\Programowanie\C#\HourFarmer\HourFarmer\obj\Release\net9.0-windows\HourFarmer.csproj.CoreCompileInputs.cache
+C:\Users\naxce\Desktop\Pulpit\Programowanie\C#\HourFarmer\HourFarmer\obj\Release\net9.0-windows\HourFarmer.csproj.Fody.CopyLocal.cache
+C:\Users\naxce\Desktop\Pulpit\Programowanie\C#\HourFarmer\HourFarmer\obj\Release\net9.0-windows\HourFarmer.csproj.Fody.RuntimeCopyLocal.cache
 C:\Users\naxce\Desktop\Pulpit\Programowanie\C#\HourFarmer\HourFarmer\obj\Release\net9.0-windows\HourFarmer.csproj.Up2Date
 C:\Users\naxce\Desktop\Pulpit\Programowanie\C#\HourFarmer\HourFarmer\obj\Release\net9.0-windows\HourFarmer.dll
 C:\Users\naxce\Desktop\Pulpit\Programowanie\C#\HourFarmer\HourFarmer\obj\Release\net9.0-windows\refint\HourFarmer.dll
 C:\Users\naxce\Desktop\Pulpit\Programowanie\C#\HourFarmer\HourFarmer\obj\Release\net9.0-windows\HourFarmer.genruntimeconfig.cache
 C:\Users\naxce\Desktop\Pulpit\Programowanie\C#\HourFarmer\HourFarmer\obj\Release\net9.0-windows\ref\HourFarmer.dll
-C:\Users\naxce\Desktop\Pulpit\Programowanie\C#\HourFarmer\HourFarmer\obj\Release\net9.0-windows\HourFarmer.csproj.Fody.CopyLocal.cache
-C:\Users\naxce\Desktop\Pulpit\Programowanie\C#\HourFarmer\HourFarmer\obj\Release\net9.0-windows\HourFarmer.csproj.Fody.RuntimeCopyLocal.cache

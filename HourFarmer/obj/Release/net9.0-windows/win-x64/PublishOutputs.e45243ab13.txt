@@ -1,1 +1,0 @@
-C:\Users\naxce\Desktop\Pulpit\Programowanie\C#\HourFarmer\HourFarmer\bin\Release\net9.0-windows\publish\win-x64\HourFarmer.exe

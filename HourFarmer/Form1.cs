@@ -32,7 +32,6 @@ namespace HourFarmer
         private int _failedAttemptsCount = 0;
         public Form1()
         {
-            FontLoader.LoadCustomFont();
             InitializeComponent();
             this.Load += new EventHandler(Form1_Load);
         }
@@ -514,13 +513,17 @@ namespace HourFarmer
 
         private void checkBoxManualAppId_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxManualAppId.Checked = true)
+            if (checkBoxManualAppId.Checked == true)
             {
+                comboBoxGames.IconColor = Color.CadetBlue;
+                textBoxAppId.PlaceholderColor = Color.LightGray;
                 comboBoxGames.Enabled = false;
                 textBoxAppId.Enabled = true;
             }
-            else
+            else if (checkBoxManualAppId.Checked == false)
             {
+                comboBoxGames.IconColor = Color.DarkTurquoise;
+                textBoxAppId.PlaceholderColor = Color.DimGray;
                 comboBoxGames.Enabled = true;
                 textBoxAppId.Enabled = false;
             }

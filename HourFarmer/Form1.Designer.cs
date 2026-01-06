@@ -23,6 +23,7 @@ namespace HourFarmer
 
         private void InitializeComponent()
         {
+            FontLoader.LoadCustomFont();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             labelStatus = new Label();
             labelSelectGame = new Label();
@@ -206,9 +207,9 @@ namespace HourFarmer
             textBoxAppId.Name = "textBoxAppId";
             textBoxAppId.Padding = new Padding(10, 7, 10, 7);
             textBoxAppId.PasswordChar = false;
-            textBoxAppId.PlaceholderColor = Color.Gray;
+            textBoxAppId.PlaceholderColor = Color.DimGray;
             textBoxAppId.PlaceholderText = "Enter AppID (e.g. 730)";
-            textBoxAppId.Size = new Size(187, 31);
+            textBoxAppId.Size = new Size(187, 25);
             textBoxAppId.TabIndex = 11;
             textBoxAppId.Texts = "";
             textBoxAppId.UnderlinedStyle = false;
@@ -226,6 +227,7 @@ namespace HourFarmer
             checkBoxManualAppId.Size = new Size(45, 22);
             checkBoxManualAppId.TabIndex = 12;
             checkBoxManualAppId.UseVisualStyleBackColor = true;
+            checkBoxManualAppId.CheckedChanged += checkBoxManualAppId_CheckedChanged;
             // 
             // label2
             // 
