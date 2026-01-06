@@ -1,6 +1,6 @@
 # 💙 HourFarmer
 
-**HourFarmer** is a lightweight tool designed to **farm Steam in-game hours** by simulating game activity without actively playing.  
+**HourFarmer** is a lightweight tool designed to **farm Steam in-game hours** by simulating game activity without actively playing.<br />
 It allows selected games to appear as running on your Steam account, increasing their total playtime automatically without the need to run the game (and drain your device's performance). 
 
 Download: [🇫​🇦​🇹​🇺​🇲​](https://fatum.cc/) <br />
