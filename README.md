@@ -10,7 +10,7 @@ Repository: [🇬​🇮​🇹​🇭​🇺​🇧​ 🇷​🇪​🇵​�
 
 ## 🧠 What is HourFarmer?
 
-HourFarmer is an application that connects to Steam and simulates idle gameplay for selected titles.  
+HourFarmer is an application that connects to Steam and simulates idle gameplay for selected titles.<br />
 This is useful if you want to increase in-game hours for games without keeping them open or running in the foreground.
 
 ![HourFarmer Preview](HourFarmerPreview.gif)
