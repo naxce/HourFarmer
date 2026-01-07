@@ -1,0 +1,81 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "Costura.Fody/6.0.0": {
+        "runtime": {
+          "lib/netstandard2.0/Costura.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.0.0"
+          }
+        }
+      },
+      "Steamworks.NET/2024.8.0": {
+        "runtime": {
+          "lib/netstandard2.1/Steamworks.NET.dll": {
+            "assemblyVersion": "2024.8.0.0",
+            "fileVersion": "2024.8.0.0"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/linux-x64/lib/netstandard2.1/Steamworks.NET.dll": {
+            "rid": "linux-x64",
+            "assetType": "runtime",
+            "assemblyVersion": "2024.8.0.0",
+            "fileVersion": "2024.8.0.0"
+          },
+          "runtimes/linux-x86/lib/netstandard2.1/Steamworks.NET.dll": {
+            "rid": "linux-x86",
+            "assetType": "runtime",
+            "assemblyVersion": "2024.8.0.0",
+            "fileVersion": "2024.8.0.0"
+          },
+          "runtimes/osx-x64/lib/netstandard2.1/Steamworks.NET.dll": {
+            "rid": "osx-x64",
+            "assetType": "runtime",
+            "assemblyVersion": "2024.8.0.0",
+            "fileVersion": "2024.8.0.0"
+          },
+          "runtimes/osx-x86/lib/netstandard2.1/Steamworks.NET.dll": {
+            "rid": "osx-x86",
+            "assetType": "runtime",
+            "assemblyVersion": "2024.8.0.0",
+            "fileVersion": "2024.8.0.0"
+          },
+          "runtimes/win-x64/lib/netstandard2.1/Steamworks.NET.dll": {
+            "rid": "win-x64",
+            "assetType": "runtime",
+            "assemblyVersion": "2024.8.0.0",
+            "fileVersion": "2024.8.0.0"
+          },
+          "runtimes/win-x86/lib/netstandard2.1/Steamworks.NET.dll": {
+            "rid": "win-x86",
+            "assetType": "runtime",
+            "assemblyVersion": "2024.8.0.0",
+            "fileVersion": "2024.8.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Costura.Fody/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3Uriu9GJABMivG0wXMJs6NQ7FNE3pylir1gZEBAWDvpii3cnrmxXnOG44MMDuIVOIk/Xhef7WZFsaCNV+py9qA==",
+      "path": "costura.fody/6.0.0",
+      "hashPath": "costura.fody.6.0.0.nupkg.sha512"
+    },
+    "Steamworks.NET/2024.8.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-FHTj80ZyT09d0XwSnhE8+e6r/hwpp1+PmQ3RZbUqlyEQCVNrWDVmdA1ElIgQgx72XGIkF947kXL53z51puGD2g==",
+      "path": "steamworks.net/2024.8.0",
+      "hashPath": "steamworks.net.2024.8.0.nupkg.sha512"
+    }
+  }
+}
