@@ -1,4 +1,4 @@
 HourFarmer v1.3 Changelog
 
 (+) steamapi64.dll is copied to base directory now.
-(/) Migrated to .NET 10.
+(/) Migrated to .NET 10.0.
