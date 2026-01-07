@@ -1,4 +1,6 @@
-HourFarmer v1.3 Changelog
+Changelog 2026.1.1
 
-(+) steamapi64.dll is copied to base directory now.
-(/) Migrated to .NET 10.
+(+) Added changelogs.
+(/) Stop button now restarts Steam instead of closing HourFarmer
+(/) Changed version format from vMAJOR.MINOR (e.g. v1.0) to YEAR.MONTH.MINOR (e.g. 2026.1.1)
+(/) Fixed no effect bug after pressing Start caused by migration to .NET 10.0.

@@ -23,7 +23,6 @@ namespace HourFarmer
 
         private void InitializeComponent()
         {
-            FontLoader.LoadCustomFont();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             labelStatus = new Label();
             labelSelectGame = new Label();
@@ -38,16 +37,18 @@ namespace HourFarmer
             textBoxAppId = new FatumTextBox();
             checkBoxManualAppId = new FatumToggleButton();
             label2 = new Label();
+            btnChangeLog = new PictureBox();
             panelTitleBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)btnMinimize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnClose).BeginInit();
             ((System.ComponentModel.ISupportInitialize)logo).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)btnChangeLog).BeginInit();
             SuspendLayout();
             // 
             // labelStatus
             // 
             labelStatus.AutoSize = true;
-            labelStatus.Font = FontLoader.GetFont(9F, FontStyle.Regular);
+            labelStatus.Font = new Font("Segoe UI", 9F);
             labelStatus.ForeColor = Color.Silver;
             labelStatus.Location = new Point(18, 188);
             labelStatus.Name = "labelStatus";
@@ -58,7 +59,7 @@ namespace HourFarmer
             // labelSelectGame
             // 
             labelSelectGame.AutoSize = true;
-            labelSelectGame.Font = FontLoader.GetFont(9F, FontStyle.Bold);
+            labelSelectGame.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelSelectGame.ForeColor = Color.White;
             labelSelectGame.Location = new Point(15, 68);
             labelSelectGame.Name = "labelSelectGame";
@@ -69,6 +70,7 @@ namespace HourFarmer
             // panelTitleBar
             // 
             panelTitleBar.BackColor = Color.FromArgb(16, 16, 36);
+            panelTitleBar.Controls.Add(btnChangeLog);
             panelTitleBar.Controls.Add(btnMinimize);
             panelTitleBar.Controls.Add(btnClose);
             panelTitleBar.Controls.Add(logo);
@@ -119,7 +121,7 @@ namespace HourFarmer
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = FontLoader.GetFont(9F, FontStyle.Regular);
+            label1.Font = new Font("Segoe UI", 9F);
             label1.ForeColor = Color.Silver;
             label1.Location = new Point(220, 216);
             label1.Name = "label1";
@@ -136,7 +138,7 @@ namespace HourFarmer
             buttonStart.BorderSize = 0;
             buttonStart.FlatAppearance.BorderSize = 0;
             buttonStart.FlatStyle = FlatStyle.Flat;
-            buttonStart.Font = FontLoader.GetFont(12F, FontStyle.Regular);
+            buttonStart.Font = new Font("Segoe UI", 12F);
             buttonStart.ForeColor = Color.White;
             buttonStart.Location = new Point(18, 135);
             buttonStart.Name = "buttonStart";
@@ -157,7 +159,7 @@ namespace HourFarmer
             buttonStop.Enabled = false;
             buttonStop.FlatAppearance.BorderSize = 0;
             buttonStop.FlatStyle = FlatStyle.Flat;
-            buttonStop.Font = FontLoader.GetFont(12F, FontStyle.Regular);
+            buttonStop.Font = new Font("Segoe UI", 12F);
             buttonStop.ForeColor = Color.White;
             buttonStop.Location = new Point(220, 135);
             buttonStop.Name = "buttonStop";
@@ -166,7 +168,7 @@ namespace HourFarmer
             buttonStop.Text = "Stop";
             buttonStop.TextColor = Color.White;
             buttonStop.UseVisualStyleBackColor = false;
-            buttonStop.Click += btnClose_Click;
+            buttonStop.Click += buttonStop_Click;
             // 
             // comboBoxGames
             // 
@@ -178,7 +180,7 @@ namespace HourFarmer
             comboBoxGames.BorderSize = 0;
             comboBoxGames.DataSource = null;
             comboBoxGames.DisplayMember = "";
-            comboBoxGames.Font = FontLoader.GetFont(10F, FontStyle.Regular);
+            comboBoxGames.Font = new Font("Segoe UI", 10F);
             comboBoxGames.ForeColor = Color.White;
             comboBoxGames.IconColor = Color.DarkTurquoise;
             comboBoxGames.ListBackColor = Color.FromArgb(26, 26, 46);
@@ -199,7 +201,7 @@ namespace HourFarmer
             textBoxAppId.BorderFocusColor = Color.DarkTurquoise;
             textBoxAppId.BorderRadius = 5;
             textBoxAppId.BorderSize = 2;
-            textBoxAppId.Font = FontLoader.GetFont(9.5F, FontStyle.Regular);
+            textBoxAppId.Font = new Font("Segoe UI", 9.5F);
             textBoxAppId.ForeColor = Color.White;
             textBoxAppId.Location = new Point(220, 94);
             textBoxAppId.Margin = new Padding(4);
@@ -209,7 +211,7 @@ namespace HourFarmer
             textBoxAppId.PasswordChar = false;
             textBoxAppId.PlaceholderColor = Color.DimGray;
             textBoxAppId.PlaceholderText = "Enter AppID (e.g. 730)";
-            textBoxAppId.Size = new Size(187, 25);
+            textBoxAppId.Size = new Size(187, 32);
             textBoxAppId.TabIndex = 11;
             textBoxAppId.Texts = "";
             textBoxAppId.UnderlinedStyle = false;
@@ -232,13 +234,24 @@ namespace HourFarmer
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = FontLoader.GetFont(9F, FontStyle.Bold);
+            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label2.ForeColor = Color.White;
             label2.Location = new Point(262, 66);
             label2.Name = "label2";
             label2.Size = new Size(87, 15);
             label2.TabIndex = 13;
             label2.Text = "Custom AppID";
+            // 
+            // btnChangeLog
+            // 
+            btnChangeLog.Image = Properties.Resources.Changelog;
+            btnChangeLog.Location = new Point(12, 8);
+            btnChangeLog.Name = "btnChangeLog";
+            btnChangeLog.Size = new Size(30, 30);
+            btnChangeLog.SizeMode = PictureBoxSizeMode.StretchImage;
+            btnChangeLog.TabIndex = 4;
+            btnChangeLog.TabStop = false;
+            btnChangeLog.Click += btnChangeLog_Click;
             // 
             // Form1
             // 
@@ -266,6 +279,7 @@ namespace HourFarmer
             ((System.ComponentModel.ISupportInitialize)btnMinimize).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnClose).EndInit();
             ((System.ComponentModel.ISupportInitialize)logo).EndInit();
+            ((System.ComponentModel.ISupportInitialize)btnChangeLog).EndInit();
             ResumeLayout(false);
             PerformLayout();
 
@@ -280,5 +294,6 @@ namespace HourFarmer
         private FatumTextBox textBoxAppId;
         private FatumToggleButton checkBoxManualAppId;
         public Label label2;
+        private PictureBox btnChangeLog;
     }
 }

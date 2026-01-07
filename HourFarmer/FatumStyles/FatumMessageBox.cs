@@ -1,4 +1,9 @@
-﻿namespace FatumStyles
+﻿using System;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+
+namespace FatumStyles
 {
     public partial class FatumMessageBox : Form
     {
@@ -13,7 +18,6 @@
 
             this.DoubleBuffered = true;
             this.Opacity = 0.0;
-
             this.BackColor = backgroundColor;
 
             Color darkerTitleColor = GetDarkerColor(backgroundColor, 10);
@@ -44,13 +48,26 @@
 
             if (this.Controls.Find(MessageLabelName, true).FirstOrDefault() is Label msgLabel)
             {
+                msgLabel.AutoSize = false;
                 msgLabel.Text = messageContent;
+
+                Size maxSize = new Size(msgLabel.Width, int.MaxValue);
+                Size textSize = TextRenderer.MeasureText(messageContent, msgLabel.Font, maxSize, TextFormatFlags.WordBreak);
+
+                int heightDelta = textSize.Height - msgLabel.Height;
+
+                if (heightDelta > 0)
+                {
+                    msgLabel.Height = textSize.Height;
+                    this.Height += heightDelta;
+                }
             }
 
             if (this.Controls.Find(ButtonOKName, true).FirstOrDefault() is Button okButton)
             {
                 okButton.Text = okButtonText;
                 okButton.BackColor = okButtonColor;
+                okButton.Top = this.ClientSize.Height - okButton.Height - 10;
             }
 
             this.FormBorderStyle = FormBorderStyle.None;
@@ -108,13 +125,11 @@
             if (e.CloseReason == CloseReason.UserClosing && this.Opacity == 1.0 && e.Cancel == false)
             {
                 e.Cancel = true;
-
                 DialogResult finalResult = this.DialogResult;
 
                 FormAnimator.FadeOut(this, () =>
                 {
                     this.DialogResult = finalResult;
-
                     this.BeginInvoke((MethodInvoker)delegate { this.Dispose(); });
                 });
             }

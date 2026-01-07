@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace HourFarmer
 {
@@ -21,7 +22,8 @@ namespace HourFarmer
         private AppId_t _currentAppId;
         private Task _steamLoopTask;
         private int _isSteamAPICalled = 0;
-        private const string __CONFIG_FILE = "farm_state.ini";
+        private readonly object _farmingLock = new object();
+        private bool _isStarting = false;
         private const string __GAME_COMBO_NAME = "comboBoxGames";
         private const string __STATUS_LABEL_NAME = "labelStatus";
         private const string __START_BUTTON_NAME = "buttonStart";
@@ -30,8 +32,16 @@ namespace HourFarmer
         private bool _shouldAutoRestart = false;
         private const int __RESTART_INTERVAL = 5000;
         private int _failedAttemptsCount = 0;
+
+        private string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "installed.dat");
+        private const string HOURFARMER_CHANGELOG = "https://raw.githubusercontent.com/naxce/HourFarmer/refs/heads/master/changelog.txt";
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern bool SetDllDirectory(string lpPathName);
+
         public Form1()
         {
+            SetDllDirectory(AppDomain.CurrentDomain.BaseDirectory);
             InitializeComponent();
             this.Load += new EventHandler(Form1_Load);
         }
@@ -47,28 +57,27 @@ namespace HourFarmer
             catch (Exception ex)
             {
                 FatumMessageBox.Show(
-                    "Steam games failed to load: " + ex.Message,
-                    "Critical Error",
-                    "OK",
-                    Properties.Resources.icon,
-                    Color.DarkTurquoise,
-                    Color.FromArgb(26, 26, 46)
-                    );
+                  "Steam games failed to load: " + ex.Message,
+                  "Critical Error",
+                  "OK",
+                  Properties.Resources.icon,
+                  Color.DarkTurquoise,
+                  Color.FromArgb(26, 26, 46)
+                  );
             }
             FormAnimator.ApplyRoundedCorners(this);
             FormAnimator.FadeIn(this);
-            if (File.Exists(__CONFIG_FILE))
+
+            this.BeginInvoke(new MethodInvoker(CheckFirstRun));
+        }
+        private void CheckFirstRun()
+        {
+            if (!File.Exists(configPath))
             {
                 try
                 {
-                    string savedAppId = File.ReadAllText(__CONFIG_FILE);
-                    if (uint.TryParse(savedAppId, out uint appId))
-                    {
-                        _currentAppId = new AppId_t(appId);
-                        _shouldAutoRestart = true;
-                        SetStatus("Auto-resuming...");
-                        Task.Delay(3000).ContinueWith(t => StartFarming());
-                    }
+                    File.WriteAllText(configPath, DateTime.Now.ToString());
+                    btnChangeLog_Click(this, EventArgs.Empty);
                 }
                 catch { }
             }
@@ -78,32 +87,27 @@ namespace HourFarmer
         {
             var steamPathProvider = (Func<string>)GetSteamPath;
             string steamPath = steamPathProvider();
-
             if (string.IsNullOrEmpty(steamPath))
             {
                 FatumMessageBox.Show("Steam client not found. Make sure Steam is installed",
-                    "Error",
-                    "OK",
-                    Properties.Resources.icon,
-                    Color.DarkTurquoise,
-                    Color.FromArgb(26, 26, 46)
-                    );
+                  "Error",
+                  "OK",
+                  Properties.Resources.icon,
+                  Color.DarkTurquoise,
+                  Color.FromArgb(26, 26, 46)
+                  );
                 return;
             }
-
             string libraryFoldersPath = Path.Combine(steamPath, "steamapps", "libraryfolders.vdf");
             var appManifests = new Dictionary<string, string>();
-
             Func<string, Dictionary<string, string>> ParseVdf = (filePath) =>
             {
                 var data = new Dictionary<string, string>();
                 if (!File.Exists(filePath)) return data;
-
                 try
                 {
                     string content = File.ReadAllText(filePath);
                     var matches = Regex.Matches(content, "\"([^\"]*)\"[\\s]*\"([^\"]*)\"");
-
                     foreach (Match match in matches)
                     {
                         if (match.Groups.Count >= 3)
@@ -117,10 +121,8 @@ namespace HourFarmer
                 catch { }
                 return data;
             };
-
             var libraryFolders = new List<string> { Path.Combine(steamPath, "steamapps") };
             var vdfData = ParseVdf(libraryFoldersPath);
-
             foreach (var kvp in vdfData.Where(x => int.TryParse(x.Key, out _)))
             {
                 string steamAppsFolder = Path.Combine(kvp.Value, "steamapps");
@@ -129,7 +131,6 @@ namespace HourFarmer
                     libraryFolders.Add(steamAppsFolder);
                 }
             }
-
             foreach (var folder in libraryFolders.Distinct())
             {
                 if (Directory.Exists(folder))
@@ -148,7 +149,6 @@ namespace HourFarmer
                     }
                 }
             }
-
             if (this.Controls.Find(__GAME_COMBO_NAME, true).FirstOrDefault() is FatumComboBox fc)
             {
                 fc.Items.Clear();
@@ -160,25 +160,24 @@ namespace HourFarmer
             else
             {
                 FatumMessageBox.Show(
-                    "Dynamic control resolution failed. Reinstall the application.",
-                    "Resolution Error",
-                    "OK",
-                    Properties.Resources.icon,
-                    Color.DarkTurquoise,
-                    Color.FromArgb(26, 26, 46)
-                    );
+                  "Dynamic control resolution failed. Reinstall the application.",
+                  "Resolution Error",
+                  "OK",
+                  Properties.Resources.icon,
+                  Color.DarkTurquoise,
+                  Color.FromArgb(26, 26, 46)
+                  );
             }
-
             if (appManifests.Count == 0)
             {
                 FatumMessageBox.Show(
-                    "Games not detected. Make sure games are installed.",
-                    "No Games",
-                    "OK",
-                    Properties.Resources.icon,
-                    Color.DarkTurquoise,
-                    Color.FromArgb(26, 26, 46)
-                    );
+                  "Games not detected. Make sure games are installed.",
+                  "No Games",
+                  "OK",
+                  Properties.Resources.icon,
+                  Color.DarkTurquoise,
+                  Color.FromArgb(26, 26, 46)
+                  );
             }
         }
 
@@ -190,14 +189,12 @@ namespace HourFarmer
                 @"SOFTWARE\Valve\Steam",
                 @"Software\Valve\Steam"
             };
-
             var hiveChecks = new (RegistryKey hive, string valName)[]
             {
                 (Registry.LocalMachine, "InstallPath"),
                 (Registry.LocalMachine, "InstallPath"),
                 (Registry.CurrentUser, "SteamPath")
             };
-
             for (int i = 0; i < regKeys.Length; i++)
             {
                 using (RegistryKey key = hiveChecks[i].hive.OpenSubKey(regKeys[i]))
@@ -211,6 +208,7 @@ namespace HourFarmer
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
+            if (_isStarting) return;
             var controls = new
             {
                 GamesBox = this.Controls.Find(__GAME_COMBO_NAME, true).FirstOrDefault() as FatumComboBox,
@@ -219,29 +217,18 @@ namespace HourFarmer
                 StatusLabel = this.Controls.Find(__STATUS_LABEL_NAME, true).FirstOrDefault() as Label,
                 StopBtn = this.Controls.Find("buttonStop", true).FirstOrDefault() as Button
             };
-
-            if (controls.StatusLabel == null || controls.StopBtn == null)
-            {
-                FatumMessageBox.Show("UI error.", "Critical Error", "OK",
-                    Properties.Resources.icon, Color.DarkTurquoise, Color.FromArgb(26, 26, 46));
-                return;
-            }
-
+            if (controls.StatusLabel == null || controls.StopBtn == null) return;
             if (!SteamAPI.IsSteamRunning())
             {
-                FatumMessageBox.Show("Steam is not running.", "Error", "OK",
-                    Properties.Resources.icon, Color.DarkTurquoise, Color.FromArgb(26, 26, 46));
+                FatumMessageBox.Show("Steam is not running.", "Error", "OK", Properties.Resources.icon, Color.DarkTurquoise, Color.FromArgb(26, 26, 46));
                 return;
             }
-
             uint appId;
-
             if (controls.ManualCheck != null && controls.ManualCheck.Checked)
             {
                 if (controls.AppIdBox == null || !uint.TryParse(controls.AppIdBox.Texts.Trim(), out appId))
                 {
-                    FatumMessageBox.Show("Invalid AppID.", "Error", "OK",
-                        Properties.Resources.icon, Color.DarkTurquoise, Color.FromArgb(26, 26, 46));
+                    FatumMessageBox.Show("Invalid AppID.", "Error", "OK", Properties.Resources.icon, Color.DarkTurquoise, Color.FromArgb(26, 26, 46));
                     return;
                 }
             }
@@ -249,52 +236,39 @@ namespace HourFarmer
             {
                 if (controls.GamesBox == null || controls.GamesBox.SelectedItem == null)
                 {
-                    FatumMessageBox.Show("Game not chosen.", "Error", "OK",
-                        Properties.Resources.icon, Color.DarkTurquoise, Color.FromArgb(26, 26, 46));
+                    FatumMessageBox.Show("Game not chosen.", "Error", "OK", Properties.Resources.icon, Color.DarkTurquoise, Color.FromArgb(26, 26, 46));
                     return;
                 }
-
                 var item = controls.GamesBox.SelectedItem as ComboBoxItem;
-                if (!uint.TryParse(item?.Value, out appId))
-                {
-                    FatumMessageBox.Show("Invalid AppID.", "Error", "OK",
-                        Properties.Resources.icon, Color.DarkTurquoise, Color.FromArgb(26, 26, 46));
-                    return;
-                }
+                if (!uint.TryParse(item?.Value, out appId)) return;
             }
-
-            if (_steamLoopTask != null && !_steamLoopTask.IsCompleted)
-                StopFarming();
-
             _currentAppId = new AppId_t(appId);
             _shouldAutoRestart = true;
             StartFarming();
         }
 
-
         private void buttonStop_Click(object sender, EventArgs e)
         {
             _shouldAutoRestart = false;
-            if (File.Exists(__CONFIG_FILE)) try { File.Delete(__CONFIG_FILE); } catch { }
             StopFarming();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            ShutdownBackgroundTasks();
-
+            _shouldAutoRestart = false;
+            Task.Run(() =>
+            {
+                CleanupSteamState();
+                KillSteamProcesses();
+                if (File.Exists("steam_appid.txt")) try { File.Delete("steam_appid.txt"); } catch { }
+                LaunchSteam();
+                ResetUiState();
+            });
             FormAnimator.FadeOut(this, Application.Exit);
         }
 
-        private void btnClose_MouseEnter(object sender, EventArgs e)
-        {
-            btnClose.Image = Properties.Resources.CloseHOVER;
-        }
-
-        private void btnClose_MouseLeave(object sender, EventArgs e)
-        {
-            btnClose.Image = Properties.Resources.Close;
-        }
+        private void btnClose_MouseEnter(object sender, EventArgs e) { btnClose.Image = Properties.Resources.CloseHOVER; }
+        private void btnClose_MouseLeave(object sender, EventArgs e) { btnClose.Image = Properties.Resources.Close; }
         private void btnMinimize_Click(object sender, EventArgs e)
         {
             FormAnimator.FadeOut(this, () =>
@@ -304,15 +278,8 @@ namespace HourFarmer
             });
         }
 
-        private void btnMinimize_MouseEnter(object sender, EventArgs e)
-        {
-            btnMinimize.Image = Properties.Resources.MinimizeHOVER;
-        }
-
-        private void btnMinimize_MouseLeave(object sender, EventArgs e)
-        {
-            btnMinimize.Image = Properties.Resources.Minimize;
-        }
+        private void btnMinimize_MouseEnter(object sender, EventArgs e) { btnMinimize.Image = Properties.Resources.MinimizeHOVER; }
+        private void btnMinimize_MouseLeave(object sender, EventArgs e) { btnMinimize.Image = Properties.Resources.Minimize; }
 
         protected override void OnResize(EventArgs e)
         {
@@ -323,9 +290,9 @@ namespace HourFarmer
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
 
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        [DllImport("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
 
         private void panelTitleBar_MouseDown(object sender, MouseEventArgs e)
@@ -336,6 +303,7 @@ namespace HourFarmer
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
         }
+
         private void SetStatus(string text)
         {
             if (this.InvokeRequired) this.BeginInvoke(new Action(() => SetStatus(text)));
@@ -355,11 +323,17 @@ namespace HourFarmer
                 var stop = this.Controls.Find("buttonStop", true).FirstOrDefault() as Button;
                 if (start != null) { start.Enabled = !running; start.BackColor = running ? Color.CadetBlue : Color.DarkTurquoise; }
                 if (stop != null) stop.Enabled = running;
-                if (running) SetStatus("Status: Farming hours...");
+                if (running) SetStatus("Status: Farming hours on AppID: " + _currentAppId.ToString());
             }
         }
+
         private void StartFarming()
         {
+            lock (_farmingLock)
+            {
+                if (_isStarting) return;
+                _isStarting = true;
+            }
             Task.Run(() =>
             {
                 try
@@ -377,17 +351,19 @@ namespace HourFarmer
                         return;
                     }
 
-                    if (_cts != null) { _cts.Cancel(); _cts.Dispose(); _cts = null; }
-                    Interlocked.Exchange(ref _isSteamAPICalled, 0);
-                    try { SteamAPI.Shutdown(); } catch { }
-
-                    Thread.Sleep(1000);
+                    CleanupSteamState();
+                    Thread.Sleep(1500);
 
                     var steamProcs = Process.GetProcessesByName("steam").Concat(Process.GetProcessesByName("Steam")).ToArray();
                     if (steamProcs.Length > 0)
                     {
+                        if (File.Exists("steam_appid.txt"))
+                        {
+                            try { File.Delete("steam_appid.txt"); } catch { }
+                        }
+
                         File.WriteAllText("steam_appid.txt", _currentAppId.ToString());
-                        Thread.Sleep(1000);
+                        Thread.Sleep(500);
 
                         if (SteamAPI.Init())
                         {
@@ -397,101 +373,131 @@ namespace HourFarmer
                             SetUiState(true);
                             return;
                         }
+                        else
+                        {
+                            SetStatus("Failed to init SteamAPI. Restart Steam.");
+                        }
+                    }
+                    else
+                    {
+                        SetStatus("Waiting for Steam...");
                     }
 
-                    SetStatus("Waiting for Steam...");
                     if (_shouldAutoRestart)
                     {
-                        Task.Delay(30000).ContinueWith(t => { if (_shouldAutoRestart) StartFarming(); });
+                        Task.Delay(__RESTART_INTERVAL).ContinueWith(t =>
+                        {
+                            if (_shouldAutoRestart) StartFarming();
+                        });
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    SetStatus("Error: " + ex.Message);
+                }
+                finally
+                {
+                    lock (_farmingLock)
+                    {
+                        _isStarting = false;
+                    }
+                }
             });
         }
+
+        private void CleanupSteamState()
+        {
+            if (_cts != null)
+            {
+                _cts.Cancel();
+                try { _cts.Dispose(); } catch { }
+                _cts = null;
+            }
+
+            if (Interlocked.Exchange(ref _isSteamAPICalled, 0) == 1)
+            {
+                try
+                {
+                    SteamAPI.Shutdown();
+                }
+                catch { }
+            }
+
+            if (File.Exists("steam_appid.txt"))
+            {
+                try { File.Delete("steam_appid.txt"); } catch { }
+            }
+
+            Thread.Sleep(500);
+        }
+
         private void SteamLoop(CancellationToken token)
         {
             try
             {
                 while (!token.IsCancellationRequested)
                 {
-                    var steamProcs = Process.GetProcessesByName("steam");
-                    if (steamProcs.Length == 0)
-                    {
-                        steamProcs = Process.GetProcessesByName("Steam");
-                    }
-
-                    if (steamProcs.Length == 0) break;
-
                     SteamAPI.RunCallbacks();
-
-                    if (token.WaitHandle.WaitOne(__THREAD_DELAY)) break;
+                    if (token.WaitHandle.WaitOne(100)) break;
                 }
             }
+            catch { }
             finally
             {
-                Interlocked.Exchange(ref _isSteamAPICalled, 0);
-
+                if (Interlocked.Exchange(ref _isSteamAPICalled, 0) == 1) { try { SteamAPI.Shutdown(); } catch { } }
                 if (!token.IsCancellationRequested && _shouldAutoRestart)
                 {
-                    var finalCheck = Process.GetProcessesByName("steam").Concat(Process.GetProcessesByName("Steam")).ToArray();
-
-                    if (finalCheck.Length == 0)
-                    {
-                        SetStatus("Steam process closed. Waiting...");
-                        Task.Delay(5000).ContinueWith(t => { if (_shouldAutoRestart) StartFarming(); });
-                    }
-                    else
-                    {
-                        StartFarming();
-                    }
+                    Task.Delay(3000).ContinueWith(t => { if (_shouldAutoRestart) StartFarming(); });
                 }
             }
         }
+
         private void ResetUiState()
         {
-            var controls = new
-            {
-                StatusLabel = this.Controls.Find(__STATUS_LABEL_NAME, true).FirstOrDefault() as Label,
-                StartBtn = this.Controls.Find(__START_BUTTON_NAME, true).FirstOrDefault() as Button,
-                StopBtn = this.Controls.Find("buttonStop", true).FirstOrDefault() as Button
-            };
-
             Action __ui_sync_lambda = () =>
             {
-                if (controls.StatusLabel != null) controls.StatusLabel.Text = "Status: Awaiting game selection.";
-                if (controls.StartBtn != null) controls.StartBtn.Enabled = true;
-                buttonStart.BackColor = Color.DarkTurquoise;
-                if (controls.StopBtn != null) controls.StopBtn.Enabled = false;
+                var lbl = this.Controls.Find(__STATUS_LABEL_NAME, true).FirstOrDefault() as Label;
+                var start = this.Controls.Find(__START_BUTTON_NAME, true).FirstOrDefault() as Button;
+                var stop = this.Controls.Find("buttonStop", true).FirstOrDefault() as Button;
+                if (lbl != null) lbl.Text = "Status: Awaiting game selection.";
+                if (start != null) { start.Enabled = true; start.BackColor = Color.DarkTurquoise; }
+                if (stop != null) stop.Enabled = false;
             };
-
-            if (this.InvokeRequired)
-            {
-                this.BeginInvoke(new MethodInvoker(__ui_sync_lambda));
-            }
-            else
-            {
-                __ui_sync_lambda();
-            }
+            if (this.InvokeRequired) this.BeginInvoke(new MethodInvoker(__ui_sync_lambda));
+            else __ui_sync_lambda();
         }
 
         private void StopFarming()
         {
-            ShutdownBackgroundTasks();
-            ResetUiState();
+            _shouldAutoRestart = false;
+            Task.Run(() =>
+            {
+                CleanupSteamState();
+                KillSteamProcesses();
+                if (File.Exists("steam_appid.txt")) try { File.Delete("steam_appid.txt"); } catch { }
+                LaunchSteam();
+                ResetUiState();
+            });
         }
-
-        private void ShutdownBackgroundTasks()
+        private void KillSteamProcesses()
         {
-            if (_cts != null) { _cts.Cancel(); _cts.Dispose(); _cts = null; }
-
-            if (Interlocked.Exchange(ref _isSteamAPICalled, 0) == 1)
+            SetStatus("Restarting Steam...");
+            string[] targets = { "steam", "SteamService", "steamwebhelper" };
+            foreach (var target in targets)
             {
-                try { SteamAPI.Shutdown(); } catch { }
+                foreach (var proc in Process.GetProcessesByName(target))
+                {
+                    try { proc.Kill(); proc.WaitForExit(2000); } catch { }
+                }
             }
-            if (File.Exists("steam_appid.txt"))
-            {
-                try { File.Delete("steam_appid.txt"); } catch { }
-            }
+            Thread.Sleep(1000);
+        }
+        private void LaunchSteam()
+        {
+            string path = GetSteamPath();
+            if (string.IsNullOrEmpty(path)) return;
+            string exe = Path.Combine(path, "steam.exe");
+            if (File.Exists(exe)) Process.Start(exe);
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -499,47 +505,49 @@ namespace HourFarmer
             if (e.CloseReason == CloseReason.UserClosing && this.Opacity == 1.0)
             {
                 e.Cancel = true;
-                ShutdownBackgroundTasks();
-                FormAnimator.FadeOut(this, () =>
-                {
-                    Application.Exit();
-                });
+                StopFarming();
+                FormAnimator.FadeOut(this, Application.Exit);
             }
-            else
-            {
-                base.OnFormClosing(e);
-            }
+            else base.OnFormClosing(e);
         }
 
         private void checkBoxManualAppId_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxManualAppId.Checked == true)
+            bool manual = checkBoxManualAppId.Checked;
+            comboBoxGames.IconColor = manual ? Color.CadetBlue : Color.DarkTurquoise;
+            textBoxAppId.PlaceholderColor = manual ? Color.LightGray : Color.DimGray;
+            comboBoxGames.Enabled = !manual;
+            textBoxAppId.Enabled = manual;
+        }
+
+        private async Task<string> GetRawTextFromUrlAsync(string url)
+        {
+            using (var client = new System.Net.Http.HttpClient())
             {
-                comboBoxGames.IconColor = Color.CadetBlue;
-                textBoxAppId.PlaceholderColor = Color.LightGray;
-                comboBoxGames.Enabled = false;
-                textBoxAppId.Enabled = true;
+                return await client.GetStringAsync(url);
             }
-            else if (checkBoxManualAppId.Checked == false)
-            {
-                comboBoxGames.IconColor = Color.DarkTurquoise;
-                textBoxAppId.PlaceholderColor = Color.DimGray;
-                comboBoxGames.Enabled = true;
-                textBoxAppId.Enabled = false;
-            }
+        }
+
+        private async void btnChangeLog_Click(object sender, EventArgs e)
+        {
+            string changelogUrl = HOURFARMER_CHANGELOG;
+            string changelogText = await GetRawTextFromUrlAsync(changelogUrl);
+            FormStart formStart = new FormStart();
+            FatumMessageBox.Show(
+                changelogText,
+                "HourFarmer " + formStart.version + " Changelog",
+                "OK",
+                Properties.Resources.icon,
+                Color.DarkTurquoise,
+                Color.FromArgb(26, 26, 46)
+            );
         }
 
         public class ComboBoxItem
         {
             public string Name { get; set; }
             public string Value { get; set; }
-
-            public ComboBoxItem(string name, string value)
-            {
-                Name = name;
-                Value = value;
-            }
-
+            public ComboBoxItem(string name, string value) { Name = name; Value = value; }
             public override string ToString() => Name;
         }
     }
