@@ -1,3 +1,4 @@
-HourFarmer v1.2.1 Changelog
+HourFarmer v1.3 Changelog
 
-(/) Fixed AppID Textbox Not Working
+(+) steamapi64.dll is copied to base directory now.
+(/) Migrated to .NET 10.
