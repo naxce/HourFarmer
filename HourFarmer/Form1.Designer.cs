@@ -23,6 +23,7 @@ namespace HourFarmer
 
         private void InitializeComponent()
         {
+            FontLoader.LoadCustomFont();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             labelStatus = new Label();
             labelSelectGame = new Label();
@@ -48,7 +49,7 @@ namespace HourFarmer
             // labelStatus
             // 
             labelStatus.AutoSize = true;
-            labelStatus.Font = new Font("Segoe UI", 9F);
+            labelStatus.Font = FontLoader.GetFont(9F, FontStyle.Regular);
             labelStatus.ForeColor = Color.Silver;
             labelStatus.Location = new Point(18, 188);
             labelStatus.Name = "labelStatus";
@@ -59,7 +60,7 @@ namespace HourFarmer
             // labelSelectGame
             // 
             labelSelectGame.AutoSize = true;
-            labelSelectGame.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelSelectGame.Font = FontLoader.GetFont(9F, FontStyle.Bold);
             labelSelectGame.ForeColor = Color.White;
             labelSelectGame.Location = new Point(15, 68);
             labelSelectGame.Name = "labelSelectGame";
@@ -121,7 +122,7 @@ namespace HourFarmer
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 9F);
+            label1.Font = FontLoader.GetFont(9F, FontStyle.Regular);
             label1.ForeColor = Color.Silver;
             label1.Location = new Point(220, 216);
             label1.Name = "label1";
@@ -138,7 +139,7 @@ namespace HourFarmer
             buttonStart.BorderSize = 0;
             buttonStart.FlatAppearance.BorderSize = 0;
             buttonStart.FlatStyle = FlatStyle.Flat;
-            buttonStart.Font = new Font("Segoe UI", 12F);
+            buttonStart.Font = FontLoader.GetFont(12F, FontStyle.Regular);
             buttonStart.ForeColor = Color.White;
             buttonStart.Location = new Point(18, 135);
             buttonStart.Name = "buttonStart";
@@ -159,7 +160,7 @@ namespace HourFarmer
             buttonStop.Enabled = false;
             buttonStop.FlatAppearance.BorderSize = 0;
             buttonStop.FlatStyle = FlatStyle.Flat;
-            buttonStop.Font = new Font("Segoe UI", 12F);
+            buttonStop.Font = FontLoader.GetFont(12F, FontStyle.Regular);
             buttonStop.ForeColor = Color.White;
             buttonStop.Location = new Point(220, 135);
             buttonStop.Name = "buttonStop";
@@ -180,7 +181,7 @@ namespace HourFarmer
             comboBoxGames.BorderSize = 0;
             comboBoxGames.DataSource = null;
             comboBoxGames.DisplayMember = "";
-            comboBoxGames.Font = new Font("Segoe UI", 10F);
+            comboBoxGames.Font = FontLoader.GetFont(10F, FontStyle.Regular);
             comboBoxGames.ForeColor = Color.White;
             comboBoxGames.IconColor = Color.DarkTurquoise;
             comboBoxGames.ListBackColor = Color.FromArgb(26, 26, 46);
@@ -201,7 +202,7 @@ namespace HourFarmer
             textBoxAppId.BorderFocusColor = Color.DarkTurquoise;
             textBoxAppId.BorderRadius = 5;
             textBoxAppId.BorderSize = 2;
-            textBoxAppId.Font = new Font("Segoe UI", 9.5F);
+            textBoxAppId.Font = FontLoader.GetFont(9.5F, FontStyle.Regular);
             textBoxAppId.ForeColor = Color.White;
             textBoxAppId.Location = new Point(220, 94);
             textBoxAppId.Margin = new Padding(4);
@@ -234,7 +235,7 @@ namespace HourFarmer
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            label2.Font = FontLoader.GetFont(9F, FontStyle.Bold);
             label2.ForeColor = Color.White;
             label2.Location = new Point(262, 66);
             label2.Name = "label2";
